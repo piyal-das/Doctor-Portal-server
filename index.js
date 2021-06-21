@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const MongoClient = require("mongodb").MongoClient;
 const uri =
-  `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.yrjsh.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
+  `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.yrjsh.mongodb.net/myFirstDatabase?retryWrites=true`;
 const ObjectId = require("mongodb").ObjectId;
 const bodyParser = require("body-parser").json();
 const fileUpload = require("express-fileupload");
@@ -10,7 +10,7 @@ require('dotenv').config()
 const app = express();
 app.use(bodyParser);
 app.use(cors());
-app.use(express.static("doctors"));
+app.use(express.static("doctors")); 
 app.use(fileUpload());
 
 const client = new MongoClient(uri, {
@@ -18,6 +18,7 @@ const client = new MongoClient(uri, {
   useUnifiedTopology: true,
 });
 
+const port = 5000;
 client.connect((err) => {
   const appointmentCollection = client
     .db("DoctorPortal")
@@ -89,7 +90,6 @@ client.connect((err) => {
   //   })
   // })
 
-
 });
 
-app.listen(5000);
+app.listen(process.env.PORT || port);
